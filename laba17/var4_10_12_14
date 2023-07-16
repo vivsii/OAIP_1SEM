@@ -1,0 +1,589 @@
+/*ВАРИАНТ 4 
+1. Создать одномерный массив, содержащий 15 элементов, наполнить его случайными значениями в ин-тервале от 1 до 200.
+Определить сумму всех нечетных элементов массива.
+2. Проверить, есть ли в матрице хотя бы одна строка, содержащая положительный элемент и найти ее но-мер. 
+Знаки элементов предыдущей строки изменить на противоположные.
+*/
+/*ВАРИАНТ 10 
+1. Найти номера четных элементов, стоящих на нечетных местах в одномерном массиве.
+2. Дана целочисленная прямоугольная матрица. Если максимальное число встречается в матрице более од-ного раза, то вывести его значение и индексы, а также количество повторений.
+*/
+/*ВАРИАНТ 12
+1. Найти количество отрицательных элементов, стоящих на чётных местах в одномерном массиве.
+2. Проверить, есть ли в матрице хотя бы одна строка, содержащая отрицательный элемент, и найти ее но-мер. Все элементы столбца с таким же номером уменьшить вдвое.
+*/
+/*ВАРИАНТ 14
+1. В одномерном массиве найти минимальный и максимальный элементы. Вычислить их разность.
+2. Если в матрице имеется столбец, все элементы которого положительны, то знаки элементов предыдуще-го столбца изменить на противоположные.
+*/
+#include <iostream>
+void var12();
+void var14();
+int var12_first(int* arr, int& n);
+void matrix(double** matr, int rows, int cols, int& numbrow);
+void var12_2();
+int& dmin(int A[], int size);
+int& dmax(int A[], int size);
+void var14_2();
+int var_14_isarow(double** matr, int cols, int rows, int& numbcol);
+void var4_first();
+int sum(int A[], int size);
+void var4_second();
+int var4_2(double** matr, int rows, int cols, int& numbrow);
+void var10_first();
+void var10_number(int* Arr, int size);
+void var10_second();
+void var10_second_partly(double** matr, int rows, int cols);
+
+
+using namespace std;
+int main()
+{
+	setlocale(LC_CTYPE, "Russian");
+	int choice;
+	do
+	{
+		cout << "Выберите вариант работы" << endl;
+		cout << "1 - Вариант 4" << endl;
+		cout << "2 - Доп 1 (вар 14)" << endl;
+		cout << "3 - Доп 2 (вар 12)" << endl;
+		cout << "4 - Доп 3 (вар 10)" << endl;
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			var4_first();
+
+			var4_second();
+
+			break;
+		case 2:
+			var14();
+
+			var14_2();
+
+			break;
+		case 3:
+			var12();
+
+			var12_2();
+
+			break;
+		case 4:
+			var10_first();
+
+			var10_second();
+
+			break;
+		case 5:
+			break;
+		}
+	} while (choice != 5);
+}
+void var12()
+{
+	int k;
+	cout << "Введите число эл массива: " << endl;
+	cin >> k;
+
+	int* arr = new int[k];
+
+	for (int i = 0; i < k; i++)
+	{
+		cout << "Введите эл массива: " << endl;
+		cin >> arr[i];
+	}
+
+	for (int i = 0; i < k; i++)
+	{
+		cout << "Массив[" << i << "]: " << arr[i] << endl;
+	}
+	int res = var12_first(arr, k);
+
+	cout << "Количество отрицательных элементов, стоящих на чётных местах в одномерном массиве: " << res << endl;
+
+	delete[] arr;
+
+}
+int var12_first(int* arr, int& n)
+{
+	int count = 0;
+
+	for (int i = 2; i < n; i += 2)
+	{
+		if (arr[i] < 0)
+		{
+			count++;
+		}
+
+	}
+	return count;
+}
+
+void var12_2()
+{
+
+	int rows, cols;
+	cout << "Введите колво строк: " << endl;
+	cin >> rows;
+
+	cout << "Введите колво столбцов: " << endl;
+	cin >> cols;
+
+	double** arr = new double* [rows];
+
+	for (int i = 0; i < rows; i++)
+	{
+		arr[i] = new double[cols];
+	}
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			arr[i][j] = rand() % 10 - 5;
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+	int numbrow = 0;
+
+	cout << endl;
+
+	matrix(arr, rows, cols, numbrow);
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+
+	for (int i = 0; i < rows; i++)
+	{
+		delete[] arr[i];
+
+	}
+	delete[] arr;
+}
+
+void matrix(double** matr, int rows, int cols, int& numbrow)
+{
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			if (matr[i][j] < 0)
+			{
+				numbrow = i;
+				cout << "Номер строки: " << numbrow << endl;
+				for (int k = 0; k < rows; k++)
+				{
+					matr[k][j] /= 2;
+				}
+				return;
+			}
+		}
+	}
+}
+
+void var14_2()
+{
+	int rows, cols;
+	int numbcol = -1;
+	cout << "Введите колво строк: " << endl;
+	cin >> rows;
+
+	cout << "Введите колво столбцов: " << endl;
+	cin >> cols;
+
+	double** arr = new double* [rows];
+
+	for (int i = 0; i < rows; i++)
+	{
+		arr[i] = new double[cols];
+	}
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << "Введите эл матрицы: " << endl;
+			cin >> arr[i][j];
+		}
+	}
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	var_14_isarow(arr, cols, rows, numbcol);
+
+	cout << "Номер столбца: " << numbcol << endl;
+
+	int numb = numbcol;
+
+	if (numb > 0)
+	{
+
+		for (int i = 0; i < rows; i++)
+		{
+			arr[i][numb - 1] *= -1;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < rows; i++)
+		{
+			arr[rows - i][cols - 1] *= -1;
+		}
+	}
+
+	cout << endl;
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	for (int i = 0; i < rows; i++)
+	{
+		delete[] arr[i];
+
+	}
+	delete[] arr;
+
+}
+int var_14_isarow(double** matr, int cols, int rows, int& numbcol)
+{
+	bool ispositive = true;
+	for (int j = 0; j < cols; j++)
+	{
+		for (int i = 0; i < rows; i++)
+		{
+			if (matr[i][j] >= 0)
+			{
+				ispositive = true;
+			}
+			else
+			{
+				ispositive = false;
+				break;
+			}
+		}
+		if (ispositive)
+		{
+			numbcol = j;
+			break;
+		}
+	}
+	return numbcol;
+}
+void var14()
+{
+	int k;
+	cout << "Введите число эл массива: " << endl;
+	cin >> k;
+
+	int* arr = new int[k];
+
+	for (int i = 0; i < k; i++)
+	{
+		cout << "Введите эл массива: " << endl;
+		cin >> arr[i];
+	}
+
+	int minel = dmin(arr, k);
+	cout << "Min element: " << minel << endl;
+
+	int maxel = dmax(arr, k);
+	cout << "Max element: " << maxel << endl;
+
+	int razn = maxel - minel;
+	cout << "Razn: " << razn << endl;
+
+	delete[] arr;
+}
+
+
+int& dmin(int A[], int size)
+{
+	int i, min = 0;
+
+	for (i = 1; i < size; i++)
+	{
+		if (A[min] > A[i])
+		{
+			min = i;
+		}
+
+	}
+	return A[min];
+}
+
+int& dmax(int A[], int size)
+{
+	int i, max = 0;
+	for (i = 1; i < size; i++)
+	{
+		if (A[max] < A[i])
+		{
+			max = i;
+		}
+	}
+	return A[max];
+}
+void var4_second()
+{
+	int rows, cols;
+
+	cout << "Введите колво строк: " << endl;
+	cin >> rows;
+
+	cout << "Введите колво столбцов: " << endl;
+	cin >> cols;
+
+	int numbrow = 0;
+
+	double** arr = new double* [rows];
+
+	for (int i = 0; i < rows; i++)
+	{
+		arr[i] = new double[cols];
+	}
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << "Введите эл массива: " << endl;
+			cin >> arr[i][j];
+		}
+	}
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+	var4_2(arr, rows, cols, numbrow);
+	int numb = numbrow;
+	cout << "Номер строки: " << numbrow << endl;
+
+	if (numb > 0)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			arr[numb - 1][j] *= -1;
+		}
+	}
+
+	cout << endl;
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+
+	for (int i = 0; i < rows; i++)
+	{
+		delete[] arr[i];
+
+	}
+	delete[] arr;
+
+}
+int var4_2(double** matr, int rows, int cols, int& numbrow)
+{
+	bool ispositive = true;
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			if (matr[i][j] >= 0)
+			{
+				ispositive = true;
+			}
+			else
+			{
+				ispositive = false;
+				break;
+			}
+		}
+		if (ispositive)
+		{
+			numbrow = i;
+			break;
+		}
+	}
+	return numbrow;
+}
+void var4_first()
+{
+	int k;
+	cout << "Введите число эл массива: " << endl;
+	cin >> k;
+
+	int* arr = new int[k];
+
+	for (int i = 0; i < k; i++)
+	{
+		arr[i] = rand() % 200;
+		cout << "Эл массива: " << arr[i] << endl;
+
+	}
+
+	int summ = sum(arr, k);
+
+	cout << "Полученная сумма нечет эл: " << summ << endl;
+
+	delete[] arr;
+}
+int sum(int A[], int size)
+{
+	int sum = 0;
+	for (int i = 0; i < size; i++)
+	{
+		if (A[i] % 2 != 0)
+		{
+			sum += A[i];
+
+		}
+	}
+	return sum;
+}
+
+void var10_first()
+{
+	int k;
+	cout << "Введите число эл массива: " << endl;
+	cin >> k;
+
+	int* arr = new int[k];
+
+	for (int i = 0; i < k; i++)
+	{
+		arr[i] = rand() % 200;
+		cout << "Массив[" << i << "]: " << arr[i] << endl;
+	}
+
+	var10_number(arr, k);
+
+	delete[] arr;
+}
+void var10_number(int* Arr, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if ((i % 2) != 0 && Arr[i] % 2 == 0)
+		{
+			cout << "Номера четных элементов, стоящих на нечетных местах в одномерном массиве: " << i << endl;
+		}
+	}
+}
+
+void var10_second()
+{
+	int rows, cols;
+
+	cout << "Введите колво строк: " << endl;
+	cin >> rows;
+
+	cout << "Введите колво столбцов: " << endl;
+	cin >> cols;
+
+	double** arr = new double* [rows];
+
+	for (int i = 0; i < rows; i++)
+	{
+		arr[i] = new double[cols];
+	}
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << "Введите эл массива: " << endl;
+			cin >> arr[i][j];
+		}
+	}
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	var10_second_partly(arr, rows, cols);
+
+
+	for (int i = 0; i < rows; i++)
+	{
+		delete[] arr[i];
+
+	}
+	delete[] arr;
+
+}
+
+void var10_second_partly(double** matr, int rows, int cols)
+{
+	int max = 0;
+	int numbrow = 0, numbcol = 0;
+	int counter = 0;
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			if (matr[i][j] > max)
+			{
+				max = *(*(matr + i) + j);
+				numbrow = i;
+				numbcol = j;
+			}
+		}
+	}
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			if (matr[i][j] == max)
+			{
+				++counter;
+			}
+		}
+	}
+	if (counter > 1)
+	{
+		cout << "Максимальное число: " << max << "\n его координаты : " << numbrow << " " << numbcol << endl;
+	}
+	else
+	{
+		cout << "Максимальное число встречается только один раз" << endl;
+
+	}
+
+}
+
+
